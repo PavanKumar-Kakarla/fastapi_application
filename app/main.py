@@ -17,6 +17,11 @@ app.add_middleware(
 )
 
 
+@app.get('/hi')
+def hi():
+    return {"message": "Hi Welcome to Fast API."}
+
+
 @app.get('/employees', response_model=list[schemas.Employee])
 def employees_list(skip:int = 0, limit:int = 10, db:Session = Depends(get_db)):
     employees_data = db.execute(select(models.Employee).order_by(models.Employee.emp_id).offset(skip).limit(limit)).scalars().all()
@@ -59,8 +64,3 @@ def employee_delete(emp_id:int, db:Session = Depends(get_db)):
     db.delete(emp_data)
     db.commit()
     return {"message": f"{emp_data.emp_name} Employee was deleted successfully"}
-
-
-@app.get('/hi')
-def hi():
-    return {"message": "Hi Welcome to Fast API."}

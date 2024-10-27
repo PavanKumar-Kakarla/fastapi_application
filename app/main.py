@@ -59,3 +59,8 @@ def employee_delete(emp_id:int, db:Session = Depends(get_db)):
     db.delete(emp_data)
     db.commit()
     return {"message": f"{emp_data.emp_name} Employee was deleted successfully"}
+
+
+@app.get('/hello')
+def hello():
+    return {"message": "Hello Welcome to Fast API."}

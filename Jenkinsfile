@@ -21,7 +21,7 @@ pipeline {
             }
         }
 
-        stage('Build and Push Docker Iamge with Docker-Compose') {
+        stage('Build and Push Docker Image with Docker-Compose') {
             steps {
                 script {
                     //  Login to AWS ECR

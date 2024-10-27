@@ -19,7 +19,7 @@ app.add_middleware(
 
 @app.get('/hi')
 def hi():
-    return {"message": "Hi Welcome to Fast API."}
+    return {"message": "Hi Welcome to Fast API Framework."}
 
 
 @app.get('/employees', response_model=list[schemas.Employee])

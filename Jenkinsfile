@@ -32,7 +32,7 @@ pipeline {
                     }
 
                     // Build and tag the image using docker-compose
-                    sh "docker-compose -f docker-compose.yml build --no-cache"
+                    sh "docker-compose -f docker-compose.yml build"
                     sh "docker tag ${ECR_REPO_NAME}:${DOCKER_IMAGE_TAG} ${ECR_REGISTRY}:${DOCKER_IMAGE_TAG}"
 
                     // Push the image to AWS ECR

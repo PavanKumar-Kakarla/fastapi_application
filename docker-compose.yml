@@ -1,0 +1,36 @@
+
+services:
+    web:
+        build: .
+        command: 
+            - /bin/bash
+            - -c
+            - "alembic upgrade head && uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload"
+        ports:
+            - "8000:8000"
+        environment:
+            DATABASE_URL: postgresql://postgres:Admin@db/EmpDB
+        depends_on:
+            - db
+        networks:
+            - fastapi_network
+        
+    db:
+        image: postgres:13
+        environment:
+            POSTGRES_USER: postgres
+            POSTGRES_PASSWORD: Admin
+            POSTGRES_DB: EmpDB
+        ports:
+            - "5433:5432"
+        volumes:
+            - postgres_data:/var/lib/postgresql/data
+        networks:
+            - fastapi_network
+
+networks:
+    fastapi_network:
+
+volumes:
+    postgres_data:
+            

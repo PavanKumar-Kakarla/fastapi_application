@@ -49,11 +49,21 @@ pipeline {
                         // Send docker-compose.yml to the EC2 instance
                         sh "scp -o StrictHostKeyChecking=no docker-compose.yml ec2-user@${EC2_IP}:/home/ec2-user/docker-compose.yml"
 
-                        // Log into AWS ECR on the EC2 instance, pull the latest image, and run with docker-compose
-                        sh "ssh -o StrictHostKeyChecking=no ec2-user@${EC2_IP} 'aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin ${ECR_REGISTRY}'"
-                        sh "ssh -o StrictHostKeyChecking=no ec2-user@${EC2_IP} 'docker-compose -f /home/ec2-user/docker-compose.yml pull'"
-                        sh "ssh -o StrictHostKeyChecking=no ec2-user@${EC2_IP} 'docker-compose -f /home/ec2-user/docker-compose.yml down || true'"
-                        sh "ssh -o StrictHostKeyChecking=no ec2-user@${EC2_IP} 'docker-compose -f /home/ec2-user/docker-compose.yml up -d'"
+                        // Login to AWS ECR on the EC2 instance using the same credentials
+                        withCredentials([usernamePassword(credentialsId: "${DOCKER_CREDENTIALS_ID}", usernameVariable: 'AWS_ACCESS_KEY', passwordVariable: 'AWS_SECRET_KEY')]) {
+                            // Configure AWS CLI
+                            sh """
+                                ssh -o StrictHostKeyChecking=no ec2-user@${EC2_IP} '
+                                aws configure set aws_access_key_id ${AWS_ACCESS_KEY};
+                                aws configure set aws_secret_access_key ${AWS_SECRET_KEY};
+                                aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin ${ECR_REGISTRY}'
+                            """
+                            
+                            // Proceed with pulling and running docker-compose
+                            sh "ssh -o StrictHostKeyChecking=no ec2-user@${EC2_IP} 'docker-compose -f /home/ec2-user/docker-compose.yml pull'"
+                            sh "ssh -o StrictHostKeyChecking=no ec2-user@${EC2_IP} 'docker-compose -f /home/ec2-user/docker-compose.yml down || true'"
+                            sh "ssh -o StrictHostKeyChecking=no ec2-user@${EC2_IP} 'docker-compose -f /home/ec2-user/docker-compose.yml up -d'"
+                        }
                     }
                 }
             }

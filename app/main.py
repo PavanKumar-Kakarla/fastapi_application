@@ -19,7 +19,7 @@ app.add_middleware(
 
 @app.get('/hi')
 def hi():
-    return {"message": "Wellcome"}
+    return {"message": "Hi Welcome"}
 
 
 @app.get('/hello/{name}')

@@ -19,12 +19,12 @@ app.add_middleware(
 
 @app.get('/hi')
 def hi():
-    return {"message": "Hi welcome to fast API and Jenkins."}
+    return {"message": "Hi Welcome to Fast API and Jenkins."}
 
 
 @app.get('/hello/{name}')
 def hello(name:str):
-    return {"message": f"Hello {name} welcome to Fast API Framework."}
+    return {"message": f"Hello {name} Welcome to Fast API Framework."}
 
 
 

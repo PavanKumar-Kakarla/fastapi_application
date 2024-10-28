@@ -3,7 +3,7 @@ version: '3.8'
 
 services:
     web:
-        image: 151738272815.dkr.ecr.ap-south-1.amazonaws.com/fastapi-app:latest
+        image: fastapi-app:latest
         build: .
         command: 
             - /bin/bash

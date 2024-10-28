@@ -8,7 +8,7 @@ pipeline {
 
         GIT_CREDENTIALS_ID = 'github_creds'
         DOCKER_CREDENTIALS_ID = 'aws_ecr_access_key'
-        DOCKER_SECRET_ID = 'aws_ecr_secret_key'
+        // DOCKER_SECRET_ID = 'aws_ecr_secret_key'
         SSH_CREDENTIALS_ID = 'ec2_ssh_creds'
     }
 
